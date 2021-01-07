@@ -5,26 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SortableListViewWithCheckBox"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
+        Title="MainWindow"
+        Height="450"
+        Width="400">
     <Window.DataContext>
         <local:MainViewModel></local:MainViewModel>
     </Window.DataContext>
-    <Grid>
+    <TabControl>
+        <TabItem Header="DataGridAndSelectedItem">
+            <StackPanel>
+                <GroupBox Header="数据参数">
+                    <TextBlock Text="{Binding SelectedData}"
+                               Height="80"
+                               TextWrapping="Wrap"></TextBlock>
+                </GroupBox>
+                <DataGrid ItemsSource="{Binding DataList}"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          AutoGenerateColumns="False"
+                          SelectedItem="{Binding SelectedData}">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn  Header="标记"
+                                                 Binding="{Binding IsChecked}"></DataGridCheckBoxColumn>
+                        <DataGridTextColumn Header="名称"
+                                            Binding="{Binding Name}"
+                                            IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridTextColumn Header="描述"
+                                            Binding="{Binding Description}"
+                                            IsReadOnly="True"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
 
-        <Grid.ColumnDefinitions>
-    <ColumnDefinition Width="*"></ColumnDefinition>
-    <ColumnDefinition Width="Auto"></ColumnDefinition>
-</Grid.ColumnDefinitions>
-        <ListView ItemsSource="{Binding DataList}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsChecked}"
-                              Content="{Binding Name}"></CheckBox>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <StackPanel Grid.Column="1" Width="80">
-            <Button Command="{Binding SortCommand}">排序</Button>
-        </StackPanel>
-    </Grid>
+        </TabItem>
+        <TabItem Header="ListBox">
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="37*"></ColumnDefinition>
+                    <ColumnDefinition Width="277*" />
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+
+                </Grid.ColumnDefinitions>
+                <ListView ItemsSource="{Binding DataList}"
+                          Grid.ColumnSpan="2">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsChecked}"
+                                      Content="{Binding Name}"></CheckBox>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <StackPanel Grid.Column="2"
+                            Width="80">
+                    <Button Command="{Binding SortCommand}">排序</Button>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+
 </Window>

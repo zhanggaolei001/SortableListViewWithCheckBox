@@ -80,6 +80,12 @@ namespace SortableListViewWithCheckBox
             }
         }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public override string ToString()
+        {
+            return $"名称:{Name}\t\r\n描述:{Description}";
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
@@ -93,12 +99,14 @@ namespace SortableListViewWithCheckBox
         {
             DataList = new List<Data>()
             {
-                new Data(){IsChecked = false,Name = "aaaaa"},
-                new Data(){IsChecked = true,Name = "bbbbb"},
-                new Data(){IsChecked = true,Name = "ccccc"},
-                new Data(){IsChecked = false,Name = "ddddd"},
+                new Data(){IsChecked = false,Name = "aaaaa",Description = "mmmmmm"},
+                new Data(){IsChecked = true,Name = "bbbbb",Description = "rrrrrrrrrrr"},
+                new Data(){IsChecked = true,Name = "ccccc",Description = "aaaaaaaaa"},
+                new Data(){IsChecked = false,Name = "ddddd",Description = "bbbbbbbbbbb"},
+
             };
             SortCommand = new SimpleCommand(Sort);
+            SelectedData = DataList.FirstOrDefault();
         }
 
         private void Sort(object obj)
@@ -107,6 +115,8 @@ namespace SortableListViewWithCheckBox
         }
 
         private List<Data> dataList;
+        private Data _selectedData;
+
         public List<Data> DataList
         {
             get { return dataList; }
@@ -114,6 +124,16 @@ namespace SortableListViewWithCheckBox
             {
                 dataList = value;
                 RaisePropertyChanged(nameof(DataList));
+            }
+        }
+
+        public Data SelectedData
+        {
+            get => _selectedData;
+            set
+            {
+                _selectedData = value;
+                RaisePropertyChanged(nameof(SelectedData));
             }
         }
 
